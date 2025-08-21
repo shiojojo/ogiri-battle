@@ -4,6 +4,7 @@ import {
   LocalVoteRepository,
   LocalUserRepository,
 } from '../../../infra/local/repositories';
+import { VoteButtons } from '../../../components/vote/VoteButtons';
 
 interface Props {
   params: { id: string };
@@ -45,7 +46,12 @@ export default async function PromptDetailPage({ params }: Props) {
               <div>{j.body}</div>
               <div className="flex items-center justify-between text-sm">
                 <span>Score: {total}</span>
-                <VoteButtons />
+                <VoteButtons
+                  jokeId={j.id}
+                  jokeUserId={j.userId || undefined}
+                  // TODO: current user context
+                  currentUserId={undefined}
+                />
               </div>
             </li>
           );
@@ -55,9 +61,4 @@ export default async function PromptDetailPage({ params }: Props) {
   );
 }
 
-function VoteButtons() {
-  // NOTE: This is a server component stub; real interaction will require client component.
-  return (
-    <div className="flex gap-1 opacity-60 text-xs">ippon / waza / valid</div>
-  );
-}
+// Client VoteButtons imported above
