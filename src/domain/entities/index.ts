@@ -9,13 +9,17 @@ export interface User {
   createdAt: string; // ISO timestamp
 }
 
+export type PromptKind = 'text' | 'image';
+
 export interface Prompt {
   id: ID;
-  title: string;
-  body?: string | null;
+  title: string; // for image prompt, can be a short descriptor
+  body?: string | null; // extended text (optional)
   createdAt: string;
   isActive: boolean;
-  status: 'upcoming' | 'active' | 'closed'; // progress concept
+  status: 'upcoming' | 'active' | 'closed';
+  kind?: PromptKind; // defaults to text
+  imageUrl?: string | null; // when kind === 'image'
 }
 
 export interface Joke {

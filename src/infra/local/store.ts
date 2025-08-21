@@ -22,12 +22,13 @@ const demoUsers: User[] = [
 
 const baseTime = Date.now();
 const demoPrompts: Prompt[] = [
-  { id: '0653d8c2-e88d-4da6-a5ec-49a330aa6546', title: 'お題 1: 初期のお題 (active)', body: null, createdAt: new Date(baseTime - 0 * 3600_000).toISOString(), isActive: true, status: 'active' },
+  { id: '0653d8c2-e88d-4da6-a5ec-49a330aa6546', title: 'お題 1: 初期のお題 (active)', body: null, createdAt: new Date(baseTime - 0 * 3600_000).toISOString(), isActive: true, status: 'active', kind: 'text' },
+  { id: '77777777-7777-7777-7777-777777777777', title: '写真で一言: 黒い羊', body: '写真で一言', createdAt: new Date(baseTime - 30 * 60_000).toISOString(), isActive: true, status: 'active', kind: 'image', imageUrl: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieks99OzkiAothfzTz7FbtakQMfXVPQDL6eUDMJfv_2ghB5xB0gUYsA5n-2YUHe5Adevn9YrfUjswiDQneXg1Q0uzEjIu3R9G-DJ7xvxi6nbj-XiNWool1RV3lRjy3-zKFGPySzfgQxHGw/s650/animal_black_sheep_hitsuji.png' },
   // upcoming を廃止 -> closed に変更
-  { id: '10000000-0000-0000-0000-000000000002', title: 'お題 2: 旧:もうすぐ開始 (closed)', body: null, createdAt: new Date(baseTime - 1 * 3600_000).toISOString(), isActive: false, status: 'closed' },
-  { id: '10000000-0000-0000-0000-000000000003', title: 'お題 3: 過去その1 (closed)', body: null, createdAt: new Date(baseTime - 2 * 3600_000).toISOString(), isActive: false, status: 'closed' },
-  { id: '10000000-0000-0000-0000-000000000004', title: 'お題 4: 過去その2 (closed)', body: null, createdAt: new Date(baseTime - 3 * 3600_000).toISOString(), isActive: false, status: 'closed' },
-  { id: '10000000-0000-0000-0000-000000000005', title: 'お題 5: 旧:近日 (closed)', body: null, createdAt: new Date(baseTime - 4 * 3600_000).toISOString(), isActive: false, status: 'closed' },
+  { id: '10000000-0000-0000-0000-000000000002', title: 'お題 2: 旧:もうすぐ開始 (closed)', body: null, createdAt: new Date(baseTime - 1 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
+  { id: '10000000-0000-0000-0000-000000000003', title: 'お題 3: 過去その1 (closed)', body: null, createdAt: new Date(baseTime - 2 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
+  { id: '10000000-0000-0000-0000-000000000004', title: 'お題 4: 過去その2 (closed)', body: null, createdAt: new Date(baseTime - 3 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
+  { id: '10000000-0000-0000-0000-000000000005', title: 'お題 5: 旧:近日 (closed)', body: null, createdAt: new Date(baseTime - 4 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
 ];
 
 const prompt0 = demoPrompts[0];

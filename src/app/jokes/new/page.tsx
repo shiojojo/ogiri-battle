@@ -21,7 +21,7 @@ export default async function NewJokePage() {
           >
             {prompts.map(p => (
               <option key={p.id} value={p.id}>
-                {p.title}
+                {p.kind === 'image' ? '🖼' : '📝'} {p.title}
               </option>
             ))}
           </select>

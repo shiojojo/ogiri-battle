@@ -39,7 +39,22 @@ export default async function Home() {
         <h1 className="text-2xl font-bold">現在のお題</h1>
         {activePrompt ? (
           <div className="border rounded p-3 bg-white/5 space-y-2">
-            <div className="font-semibold">{activePrompt.title}</div>
+            <div className="font-semibold flex items-center gap-2">
+              {activePrompt.kind === 'image' && activePrompt.imageUrl && (
+                <div className="w-20 h-20 rounded border bg-white dark:bg-white flex items-center justify-center overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={activePrompt.imageUrl}
+                    alt={activePrompt.title}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              )}
+              <span>
+                {activePrompt.kind === 'image' ? '🖼' : '📝'}{' '}
+                {activePrompt.title}
+              </span>
+            </div>
             <div className="flex gap-2 text-sm">
               <Link
                 href={`/prompt/${activePrompt.id}`}
@@ -68,7 +83,7 @@ export default async function Home() {
                   : 'bg-white/5'
               }`}
             >
-              {p.title}
+              {p.kind === 'image' ? '🖼' : '📝'} {p.title}
             </Link>
           ))}
         </div>

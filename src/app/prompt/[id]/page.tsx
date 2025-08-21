@@ -34,6 +34,17 @@ export default async function PromptDetailPage({ params }: Props) {
       <h1 className="text-xl font-bold sticky top-0 bg-background/80 backdrop-blur p-2">
         {prompt.title}
       </h1>
+      {prompt.kind === 'image' && prompt.imageUrl && (
+        <div className="w-full bg-white dark:bg-white rounded border p-2 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={prompt.imageUrl}
+            alt={prompt.title}
+            className="max-h-72 w-auto object-contain"
+            style={{ mixBlendMode: 'normal' }}
+          />
+        </div>
+      )}
       {prompt.status === 'closed' && (
         <div className="text-xs text-amber-500">
           過去お題ですが投票は可能です。
