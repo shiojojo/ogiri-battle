@@ -17,9 +17,15 @@ export class LocalUserRepository implements UserRepository {
 
 export class LocalPromptRepository implements PromptRepository {
   async listRecent(limit: number, includeClosed = false): Promise<Prompt[]> {
-    // Recent defined by createdAt desc; exclude closed unless includeClosed
-    const filtered = includeClosed ? localDB.prompts : localDB.prompts.filter(p => p.status !== 'closed');
-    return [...filtered].sort((a,b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
+    // Now statuses are active or closed only. If includeClosed=false, show only active (fallback to latest closed if none active)
+    const active = localDB.prompts.filter(p => p.status === 'active');
+    let list: Prompt[];
+    if (!includeClosed) {
+      list = active.length ? active : localDB.prompts; // fallback
+    } else {
+      list = localDB.prompts;
+    }
+    return [...list].sort((a,b)=> b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
   }
   async listAll(): Promise<Prompt[]> { return [...localDB.prompts]; }
   async get(id: ID) { return localDB.prompts.find(p => p.id === id); }
@@ -71,5 +77,15 @@ export class LocalScoreService implements ScoreService {
     }, {});
     return Object.entries(scoreByUser).map(([userId, totalScore]) => ({ userId, totalScore }))
       .sort((a,b)=> b.totalScore - a.totalScore);
+  }
+  async computeAllTimeUserScores(): Promise<RecentUserScore[]> {
+    const votes = await this.votes.listByJokeIds(localDB.jokes.map(j=>j.id));
+    const scoreByJoke = votes.reduce<Record<ID, number>>((acc,v)=>{acc[v.jokeId]=(acc[v.jokeId]||0)+v.weight;return acc;},{});
+    const scoreByUser = localDB.jokes.reduce<Record<ID, number>>((acc,j)=>{
+      if(!j.userId) return acc;
+      acc[j.userId]=(acc[j.userId]||0)+(scoreByJoke[j.id]||0);
+      return acc;
+    },{});
+    return Object.entries(scoreByUser).map(([userId,totalScore])=>({userId,totalScore})).sort((a,b)=>b.totalScore-a.totalScore);
   }
 }

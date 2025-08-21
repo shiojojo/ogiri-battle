@@ -9,7 +9,7 @@ import {
 
 async function getDashboardData() {
   const promptRepo = new LocalPromptRepository();
-  const prompts = await promptRepo.listRecent(5); // active/upcoming only
+  const prompts = await promptRepo.listRecent(10, true); // last 10 (active + closed)
   const active = prompts.find(p => p.status === 'active') || prompts[0];
   // mini scoreboard
   const userRepo = new LocalUserRepository();
@@ -17,18 +17,22 @@ async function getDashboardData() {
   const voteRepo = new LocalVoteRepository();
   const scoreService = new LocalScoreService(promptRepo, jokeRepo, voteRepo);
   const users = await userRepo.list();
-  const scores = await scoreService.computeRecentUserScores(10);
-  const scoreboard = scores
-    .slice(0, 5)
-    .map(s => ({
-      name: users.find(u => u.id === s.userId)?.displayName || 'Unknown',
-      total: s.totalScore,
-    }));
-  return { activePrompt: active, prompts, scoreboard };
+  const recentScores = await scoreService.computeRecentUserScores(10);
+  const allTimeScores = await scoreService.computeAllTimeUserScores();
+  const scoreboard = recentScores.slice(0, 5).map(s => ({
+    name: users.find(u => u.id === s.userId)?.displayName || 'Unknown',
+    total: s.totalScore,
+  }));
+  const allTimeMini = allTimeScores.slice(0, 5).map(s => ({
+    name: users.find(u => u.id === s.userId)?.displayName || 'Unknown',
+    total: s.totalScore,
+  }));
+  return { activePrompt: active, prompts, scoreboard, allTimeMini };
 }
 
 export default async function Home() {
-  const { activePrompt, prompts, scoreboard } = await getDashboardData();
+  const { activePrompt, prompts, scoreboard, allTimeMini } =
+    await getDashboardData();
   return (
     <main className="p-4 space-y-6 max-w-xl mx-auto">
       <section className="space-y-2">
@@ -78,6 +82,22 @@ export default async function Home() {
         </header>
         <ul className="space-y-1">
           {scoreboard.map((r, i) => (
+            <li
+              key={i}
+              className="flex justify-between text-sm border rounded px-2 py-1 bg-white/5"
+            >
+              <span>
+                {i + 1}. {r.name}
+              </span>
+              <span className="font-mono">{r.total}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="space-y-2">
+        <h2 className="text-xl font-bold">All Time 上位</h2>
+        <ul className="space-y-1">
+          {allTimeMini.map((r, i) => (
             <li
               key={i}
               className="flex justify-between text-sm border rounded px-2 py-1 bg-white/5"

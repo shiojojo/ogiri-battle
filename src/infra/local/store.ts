@@ -23,10 +23,11 @@ const demoUsers: User[] = [
 const baseTime = Date.now();
 const demoPrompts: Prompt[] = [
   { id: '0653d8c2-e88d-4da6-a5ec-49a330aa6546', title: 'お題 1: 初期のお題 (active)', body: null, createdAt: new Date(baseTime - 0 * 3600_000).toISOString(), isActive: true, status: 'active' },
-  { id: '10000000-0000-0000-0000-000000000002', title: 'お題 2: もうすぐ開始 (upcoming)', body: null, createdAt: new Date(baseTime - 1 * 3600_000).toISOString(), isActive: false, status: 'upcoming' },
+  // upcoming を廃止 -> closed に変更
+  { id: '10000000-0000-0000-0000-000000000002', title: 'お題 2: 旧:もうすぐ開始 (closed)', body: null, createdAt: new Date(baseTime - 1 * 3600_000).toISOString(), isActive: false, status: 'closed' },
   { id: '10000000-0000-0000-0000-000000000003', title: 'お題 3: 過去その1 (closed)', body: null, createdAt: new Date(baseTime - 2 * 3600_000).toISOString(), isActive: false, status: 'closed' },
   { id: '10000000-0000-0000-0000-000000000004', title: 'お題 4: 過去その2 (closed)', body: null, createdAt: new Date(baseTime - 3 * 3600_000).toISOString(), isActive: false, status: 'closed' },
-  { id: '10000000-0000-0000-0000-000000000005', title: 'お題 5: 近日 (upcoming)', body: null, createdAt: new Date(baseTime - 4 * 3600_000).toISOString(), isActive: false, status: 'upcoming' },
+  { id: '10000000-0000-0000-0000-000000000005', title: 'お題 5: 旧:近日 (closed)', body: null, createdAt: new Date(baseTime - 4 * 3600_000).toISOString(), isActive: false, status: 'closed' },
 ];
 
 const prompt0 = demoPrompts[0];

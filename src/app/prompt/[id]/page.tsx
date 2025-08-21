@@ -34,6 +34,11 @@ export default async function PromptDetailPage({ params }: Props) {
       <h1 className="text-xl font-bold sticky top-0 bg-background/80 backdrop-blur p-2">
         {prompt.title}
       </h1>
+      {prompt.status === 'closed' && (
+        <div className="text-xs text-amber-500">
+          過去お題ですが投票は可能です。
+        </div>
+      )}
       <ul className="space-y-3">
         {jokes.map(j => {
           const author = users.find(u => u.id === j.userId);

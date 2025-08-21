@@ -29,4 +29,5 @@ export interface CommentRepository {
 
 export interface ScoreService {
   computeRecentUserScores(limitPrompts: number, includeClosed?: boolean): Promise<RecentUserScore[]>;
+  computeAllTimeUserScores(): Promise<RecentUserScore[]>;
 }

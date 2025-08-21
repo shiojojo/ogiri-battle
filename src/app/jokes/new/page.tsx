@@ -3,7 +3,8 @@ import { LocalPromptRepository } from '../../../infra/local/repositories';
 export default async function NewJokePage() {
   const promptRepo = new LocalPromptRepository();
   const prompts = (await promptRepo.listAll()).filter(
-    p => p.status === 'active' || p.status === 'upcoming'
+    // Allow posting to past (closed) prompts too; exclude upcoming.
+    p => p.status === 'active' || p.status === 'closed'
   );
   return (
     <main className="p-4 max-w-sm mx-auto space-y-4">
