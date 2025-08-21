@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { UserProvider } from '../components/user/UserContext';
+import { CurrentUserBadge } from '../components/user/CurrentUserBadge';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,9 +29,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Header />
-        <div className="flex-1 w-full">{children}</div>
-        <MobileNav />
+        <UserProvider>
+          <Header />
+          <div className="flex-1 w-full">{children}</div>
+          <MobileNav />
+        </UserProvider>
       </body>
     </html>
   );
@@ -50,17 +54,20 @@ function Header() {
         <Link href="/users/new">User+</Link>
         <Link href="/auth">Auth</Link>
       </nav>
+      <div className="hidden sm:block ml-4">
+        <CurrentUserBadge />
+      </div>
     </header>
   );
 }
 
 function MobileNav() {
   return (
-    <nav className="sm:hidden fixed bottom-0 left-0 right-0 flex justify-around border-t bg-background/90 backdrop-blur py-2 text-xs">
+    <nav className="sm:hidden fixed bottom-0 left-0 right-0 flex justify-around items-center border-t bg-background/90 backdrop-blur py-2 text-[10px]">
       <Link href="/scoreboard">Score</Link>
       <Link href="/archive">Archive</Link>
       <Link href="/jokes/new">Post</Link>
-      <Link href="/auth">User</Link>
+      <CurrentUserBadge />
     </nav>
   );
 }

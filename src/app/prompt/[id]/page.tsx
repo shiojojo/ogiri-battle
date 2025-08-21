@@ -4,7 +4,7 @@ import {
   LocalVoteRepository,
   LocalUserRepository,
 } from '../../../infra/local/repositories';
-import { VoteButtons } from '../../../components/vote/VoteButtons';
+import VoteClient from './VoteClient';
 
 interface Props {
   params: { id: string };
@@ -51,12 +51,7 @@ export default async function PromptDetailPage({ params }: Props) {
               <div>{j.body}</div>
               <div className="flex items-center justify-between text-sm">
                 <span>Score: {total}</span>
-                <VoteButtons
-                  jokeId={j.id}
-                  jokeUserId={j.userId || undefined}
-                  // TODO: current user context
-                  currentUserId={undefined}
-                />
+                <VoteClient jokeId={j.id} jokeUserId={j.userId || undefined} />
               </div>
             </li>
           );
