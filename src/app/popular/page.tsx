@@ -5,7 +5,6 @@ import {
   LocalCommentRepository,
   LocalUserRepository,
 } from '../../infra/local/repositories';
-// @ts-expect-error temporary import resolution
 import PopularClient from './PopularClient';
 import { Joke, Vote, User } from '../../domain/entities';
 
