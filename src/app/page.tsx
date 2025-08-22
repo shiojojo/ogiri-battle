@@ -9,7 +9,7 @@ import {
 
 async function getDashboardData() {
   const promptRepo = new LocalPromptRepository();
-  const prompts = await promptRepo.listRecent(10, true); // last 10 (active + closed)
+  const prompts = await promptRepo.listRecent(10); // active prompts only
   const active = prompts.find(p => p.status === 'active') || prompts[0];
   // mini scoreboard
   const userRepo = new LocalUserRepository();

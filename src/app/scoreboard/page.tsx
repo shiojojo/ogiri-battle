@@ -6,17 +6,14 @@ import {
   LocalScoreService,
 } from '../../infra/local/repositories';
 
-async function getData(includeClosed: boolean) {
+async function getData() {
   const userRepo = new LocalUserRepository();
   const promptRepo = new LocalPromptRepository();
   const jokeRepo = new LocalJokeRepository();
   const voteRepo = new LocalVoteRepository();
   const scoreService = new LocalScoreService(promptRepo, jokeRepo, voteRepo);
   const users = await userRepo.list();
-  const recentScores = await scoreService.computeRecentUserScores(
-    10,
-    includeClosed
-  );
+  const recentScores = await scoreService.computeRecentUserScores(10);
   const allTimeScores = await scoreService.computeAllTimeUserScores();
   const recentData = recentScores.map(s => ({
     user: users.find(u => u.id === s.userId)!,
@@ -29,30 +26,11 @@ async function getData(includeClosed: boolean) {
   return { recentData, allTimeData };
 }
 
-export default async function ScoreboardPage({
-  searchParams,
-}: {
-  searchParams: { closed?: string };
-}) {
-  const includeClosed = searchParams.closed === '1';
-  const { recentData, allTimeData } = await getData(includeClosed);
+export default async function ScoreboardPage() {
+  const { recentData, allTimeData } = await getData();
   return (
     <main className="p-4 max-w-md mx-auto space-y-4">
       <h1 className="text-2xl font-bold">Scoreboard (Recent 10 Prompts)</h1>
-      <div className="text-xs flex gap-2 items-center">
-        <a
-          href="/scoreboard"
-          className={!includeClosed ? 'font-bold underline' : 'opacity-60'}
-        >
-          Active/Upcoming
-        </a>
-        <a
-          href="/scoreboard?closed=1"
-          className={includeClosed ? 'font-bold underline' : 'opacity-60'}
-        >
-          Include Closed
-        </a>
-      </div>
       <ul className="space-y-2">
         {recentData.map((r, i) => (
           <li

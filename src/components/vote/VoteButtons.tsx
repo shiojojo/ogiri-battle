@@ -1,11 +1,15 @@
 'use client';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 
 interface Props {
   jokeId: string;
   currentUserId?: string | null;
   jokeUserId?: string | null;
-  onVoted?: (payload: { type: VoteType; weight: number }) => void;
+  onVoted?: (payload: {
+    type: VoteType;
+    weight: number;
+    delta: number;
+  }) => void;
   existing?: VoteSummary | null;
 }
 
@@ -26,6 +30,9 @@ export function VoteButtons({
 }: Props) {
   const [pending, startTransition] = useTransition();
   const [state, setState] = useState<VoteSummary | null>(existing || null);
+  useEffect(() => {
+    setState(existing || null);
+  }, [existing]);
   const [error, setError] = useState<string | null>(null);
   const self = currentUserId && jokeUserId && currentUserId === jokeUserId;
 
@@ -47,7 +54,8 @@ export function VoteButtons({
         setState(prev); // rollback
       } else {
         await res.json(); // ignore content
-        onVoted?.({ type, weight: optimistic.weight });
+        const delta = optimistic.weight - (prev?.weight || 0);
+        onVoted?.({ type, weight: optimistic.weight, delta });
       }
     });
   };

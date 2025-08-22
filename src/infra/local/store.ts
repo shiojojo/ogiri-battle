@@ -44,9 +44,9 @@ const prompt0 = demoPrompts[0];
 // Provide multiple jokes for active prompt and a few for closed to test filters
 const demoJokes: Joke[] = [
   // Active prompt (20 jokes)
-  { id: 'aaaa0000-0000-0000-0000-000000000001', promptId: prompt0.id, userId: demoUsers[0].id, body: '「アップデート、完了…あ、これ息ってやつ？」', createdAt: now(), tags: [], source: 'app' },
+  { id: 'aaaa0000-0000-0000-0000-000000000001', promptId: prompt0.id, userId: demoUsers[0].id, body: '「アップデート、完了…あ、これ息ってやつ？」', createdAt: now(), tags: ['息'], source: 'app' },
   { id: 'aaaa0000-0000-0000-0000-000000000002', promptId: prompt0.id, userId: demoUsers[1].id, body: '「バッテリーどこ？…え、飯？」', createdAt: now(), tags: [], source: 'app' },
-  { id: 'aaaa0000-0000-0000-0000-000000000003', promptId: prompt0.id, userId: demoUsers[2].id, body: '「ログイン不要、感情フルアクセス。」', createdAt: now(), tags: [], source: 'app' },
+  { id: 'aaaa0000-0000-0000-0000-000000000003', promptId: prompt0.id, userId: demoUsers[2].id, body: '「ログイン不要、感情フルアクセス。」', createdAt: now(), tags: ['感情', 'フルアクセス'], source: 'app' },
   { id: 'aaaa0000-0000-0000-0000-000000000004', promptId: prompt0.id, userId: demoUsers[0].id, body: '「人肌って高解像度…！」', createdAt: now(), tags: [], source: 'app' },
   { id: 'aaaa0000-0000-0000-0000-000000000005', promptId: prompt0.id, userId: demoUsers[1].id, body: '「キャッシュ全部飛んだ感じ…これ記憶？」', createdAt: now(), tags: [], source: 'app' },
   { id: 'aaaa0000-0000-0000-0000-000000000006', promptId: prompt0.id, userId: demoUsers[2].id, body: '「初期設定スキップでお願いします。」', createdAt: now(), tags: [], source: 'app' },
@@ -72,8 +72,19 @@ const db: DatabaseShape = {
   users: demoUsers,
   prompts: demoPrompts,
   jokes: demoJokes,
-  votes: [],
-  comments: [],
+  votes: [
+    // Seed votes (no self-vote violations)
+    { id: 'v0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'waza', weight: DEFAULT_VOTE_WEIGHTS.waza, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000003', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000004', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'valid', weight: DEFAULT_VOTE_WEIGHTS.valid, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000005', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'waza', weight: DEFAULT_VOTE_WEIGHTS.waza, createdAt: now() },
+  ],
+  comments: [
+    { id: 'c0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', userId: demoUsers[1].id, guestName: null, body: '息を意識するAIいい', createdAt: now() },
+    { id: 'c0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000003', userId: demoUsers[0].id, guestName: null, body: 'フルアクセス欲張り', createdAt: now() },
+    { id: 'c0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000014', userId: demoUsers[2].id, guestName: null, body: '涙のバグ好き', createdAt: now() },
+  ],
   voteWeights: DEFAULT_VOTE_WEIGHTS,
 };
 

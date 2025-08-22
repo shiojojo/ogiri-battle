@@ -16,15 +16,9 @@ export class LocalUserRepository implements UserRepository {
 }
 
 export class LocalPromptRepository implements PromptRepository {
-  async listRecent(limit: number, includeClosed = false): Promise<Prompt[]> {
-    // Now statuses are active or closed only. If includeClosed=false, show only active (fallback to latest closed if none active)
-    const active = localDB.prompts.filter(p => p.status === 'active');
-    let list: Prompt[];
-    if (!includeClosed) {
-      list = active.length ? active : localDB.prompts; // fallback
-    } else {
-      list = localDB.prompts;
-    }
+  async listRecent(limit: number): Promise<Prompt[]> {
+    // Closed is treated as logically deleted; exclude.
+    const list = localDB.prompts.filter(p => p.status === 'active');
     return [...list].sort((a,b)=> b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
   }
   async listAll(): Promise<Prompt[]> { return [...localDB.prompts]; }
@@ -61,8 +55,8 @@ export class LocalCommentRepository implements CommentRepository {
 
 export class LocalScoreService implements ScoreService {
   constructor(private prompts: LocalPromptRepository, private jokes: LocalJokeRepository, private votes: LocalVoteRepository) {}
-  async computeRecentUserScores(limitPrompts: number, includeClosed = false): Promise<RecentUserScore[]> {
-    const recent = await this.prompts.listRecent(limitPrompts, includeClosed);
+  async computeRecentUserScores(limitPrompts: number): Promise<RecentUserScore[]> {
+    const recent = await this.prompts.listRecent(limitPrompts);
     const recentIds = new Set(recent.map(p => p.id));
     const jokes = localDB.jokes.filter(j => recentIds.has(j.promptId));
     const votes = await this.votes.listByJokeIds(jokes.map(j => j.id));
