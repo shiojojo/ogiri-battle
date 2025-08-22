@@ -56,10 +56,14 @@ export function VoteButtons({
     const active = state?.type === type;
     return (
       <button
+        type="button"
+        aria-label={`${label} を投票`}
         disabled={!!pending || !!self}
         onClick={() => act(type)}
-        className={`px-2 py-1 rounded text-xs border transition ${
-          active ? 'bg-blue-600 text-white border-blue-600' : 'bg-white/5'
+        className={`min-w-[64px] px-3 py-2 rounded-md text-sm font-medium border shadow-sm transition focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 focus:ring-offset-background ${
+          active
+            ? 'bg-blue-600 text-white border-blue-600'
+            : 'bg-white/10 hover:bg-white/20 border-white/30'
         } ${self ? 'opacity-30 cursor-not-allowed' : ''}`}
       >
         {label}
@@ -69,7 +73,7 @@ export function VoteButtons({
 
   return (
     <div className="flex flex-col items-end gap-1">
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         {btn('一本', 'ippon')}
         {btn('技あり', 'waza')}
         {btn('有効', 'valid')}

@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <UserProvider>
           <Header />
-          <div className="flex-1 w-full">{children}</div>
+          <div className="flex-1 w-full pb-24 sm:pb-0">{children}</div>
           <MobileNav />
         </UserProvider>
       </body>
@@ -63,7 +63,7 @@ function Header() {
 
 function MobileNav() {
   return (
-    <nav className="sm:hidden fixed bottom-0 left-0 right-0 flex justify-around items-center border-t bg-background/90 backdrop-blur py-2 text-[10px]">
+    <nav className="sm:hidden fixed bottom-0 left-0 right-0 flex justify-around items-center border-t bg-background/90 backdrop-blur py-2 text-[10px] pb-[calc(env(safe-area-inset-bottom))]">
       <Link href="/scoreboard">Score</Link>
       <Link href="/archive">Archive</Link>
       <Link href="/jokes/new">Post</Link>

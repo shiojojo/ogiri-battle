@@ -30,27 +30,26 @@ export default async function PromptDetailPage({ params }: Props) {
     return acc;
   }, {});
   return (
-    <main className="p-4 space-y-4 max-w-xl mx-auto">
-      <h1 className="text-xl font-bold sticky top-0 bg-background/80 backdrop-blur p-2">
-        {prompt.title}
-      </h1>
-      {prompt.kind === 'image' && prompt.imageUrl && (
-        <div className="w-full bg-white dark:bg-white rounded border p-2 flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={prompt.imageUrl}
-            alt={prompt.title}
-            className="max-h-72 w-auto object-contain"
-            style={{ mixBlendMode: 'normal' }}
-          />
-        </div>
-      )}
-      {prompt.status === 'closed' && (
-        <div className="text-xs text-amber-500">
-          過去お題ですが投票は可能です。
-        </div>
-      )}
-      <ul className="space-y-3">
+    <main className="p-0 max-w-xl mx-auto flex flex-col h-[calc(100vh-60px)] pb-24 sm:pb-0">
+      <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b p-4 space-y-3">
+        <h1 className="text-lg font-bold leading-snug">{prompt.title}</h1>
+        {prompt.kind === 'image' && prompt.imageUrl && (
+          <div className="w-full bg-white dark:bg-white rounded border p-2 flex justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={prompt.imageUrl}
+              alt={prompt.title}
+              className="max-h-56 w-auto object-contain"
+            />
+          </div>
+        )}
+        {prompt.status === 'closed' && (
+          <div className="text-xs text-amber-500">
+            過去お題ですが投票は可能です。
+          </div>
+        )}
+      </div>
+      <ul className="flex-1 overflow-y-auto p-4 space-y-3 pb-24 sm:pb-6">
         {jokes.map(j => {
           const author = users.find(u => u.id === j.userId);
           const total = voteByJoke[j.id] || 0;
