@@ -13,13 +13,13 @@ interface Props {
   existing?: VoteSummary | null;
 }
 
-type VoteType = 'ippon' | 'waza' | 'valid';
+type VoteType = 'ippon' | 'waza_ari' | 'yuko';
 interface VoteSummary {
   type: VoteType;
   weight: number;
 }
 
-const weightMap: Record<VoteType, number> = { ippon: 3, waza: 2, valid: 1 };
+const weightMap: Record<VoteType, number> = { ippon: 3, waza_ari: 2, yuko: 1 };
 
 export function VoteButtons({
   jokeId,
@@ -83,8 +83,8 @@ export function VoteButtons({
     <div className="flex flex-col items-end gap-1">
       <div className="flex gap-2">
         {btn('一本', 'ippon')}
-        {btn('技あり', 'waza')}
-        {btn('有効', 'valid')}
+        {btn('技あり', 'waza_ari')}
+        {btn('有効', 'yuko')}
       </div>
       {error && (
         <div

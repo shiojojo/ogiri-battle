@@ -74,11 +74,11 @@ const db: DatabaseShape = {
   jokes: demoJokes,
   votes: [
     // Seed votes (no self-vote violations)
-    { id: 'v0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
-    { id: 'v0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'waza', weight: DEFAULT_VOTE_WEIGHTS.waza, createdAt: now() },
-    { id: 'v0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000003', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
-    { id: 'v0000000-0000-0000-0000-000000000004', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'valid', weight: DEFAULT_VOTE_WEIGHTS.valid, createdAt: now() },
-    { id: 'v0000000-0000-0000-0000-000000000005', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'waza', weight: DEFAULT_VOTE_WEIGHTS.waza, createdAt: now() },
+  { id: 'v0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+  { id: 'v0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+  { id: 'v0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000003', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+  { id: 'v0000000-0000-0000-0000-000000000004', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
+  { id: 'v0000000-0000-0000-0000-000000000005', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
   ],
   comments: [
     { id: 'c0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', userId: demoUsers[1].id, guestName: null, body: '息を意識するAIいい', createdAt: now() },

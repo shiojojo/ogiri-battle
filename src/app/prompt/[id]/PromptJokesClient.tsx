@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Joke, Comment, User, Vote } from '../../../domain/entities';
+import { Joke, Comment, User, Vote, VoteType } from '../../../domain/entities';
 import { VoteButtons } from '../../../components/vote/VoteButtons';
 import { useUser } from '../../../components/user/UserContext';
 
@@ -89,7 +89,8 @@ export default function PromptJokesClient({
                     existing={
                       existingVote
                         ? {
-                            type: existingVote.type,
+                            // Cast to local component VoteType union
+                            type: existingVote.type as VoteType,
                             weight: existingVote.weight,
                           }
                         : undefined
@@ -158,7 +159,11 @@ export default function PromptJokesClient({
                               'Anon'}
                           </span>
                           <span className="text-[11px] px-2 py-0.5 rounded bg-blue-600/20 border border-blue-600/40">
-                            {v.type}
+                            {v.type === 'ippon'
+                              ? '一本'
+                              : v.type === 'waza_ari'
+                              ? '技あり'
+                              : '有効'}
                           </span>
                         </li>
                       ))}

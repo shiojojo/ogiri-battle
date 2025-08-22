@@ -32,7 +32,7 @@ export interface Joke {
   source?: 'app' | 'line';
 }
 
-export type VoteType = 'ippon' | 'waza' | 'valid';
+export type VoteType = 'ippon' | 'waza_ari' | 'yuko';
 
 export interface Vote {
   id: ID;
@@ -60,12 +60,12 @@ export interface RecentUserScore {
 
 export interface VoteWeightsConfig {
   ippon: number;
-  waza: number;
-  valid: number;
+  waza_ari: number;
+  yuko: number;
 }
 
 export const DEFAULT_VOTE_WEIGHTS: VoteWeightsConfig = {
   ippon: 3,
-  waza: 2,
-  valid: 1,
+  waza_ari: 2,
+  yuko: 1,
 };

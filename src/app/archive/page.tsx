@@ -10,13 +10,13 @@ export default async function ArchivePage() {
         {prompts
           .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
           .map(p => (
-            <li
-              key={p.id}
-              className="border rounded p-2 flex items-center justify-between gap-2"
-            >
-              <span className="truncate max-w-[70%] flex items-center gap-1">
+            <li key={p.id}>
+              <a
+                href={`/prompt/${p.id}`}
+                className="border rounded p-2 flex items-center gap-3 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+              >
                 {p.kind === 'image' && (
-                  <div className="w-10 h-10 rounded border bg-white dark:bg-white flex items-center justify-center overflow-hidden">
+                  <div className="w-12 h-12 rounded border bg-white dark:bg-white flex items-center justify-center overflow-hidden shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={p.imageUrl || ''}
@@ -25,12 +25,9 @@ export default async function ArchivePage() {
                     />
                   </div>
                 )}
-                <span>
+                <span className="truncate font-medium">
                   {p.kind === 'image' ? '🖼' : '📝'} {p.title}
                 </span>
-              </span>
-              <a href={`/prompt/${p.id}`} className="text-blue-500 text-xs">
-                見る
               </a>
             </li>
           ))}

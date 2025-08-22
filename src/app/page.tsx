@@ -60,7 +60,7 @@ export default async function Home() {
                 href={`/prompt/${activePrompt.id}`}
                 className="text-blue-500"
               >
-                ボケを見る / 投票
+                投票
               </Link>
               <Link href="/jokes/new" className="text-blue-500">
                 投稿
