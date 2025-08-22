@@ -20,6 +20,7 @@ export default function ArchiveClient({ prompts, stats, initialSort }: Props) {
   // Prompt tags removed
   const [list] = useState(prompts);
   const [sort, setSort] = useState<string>(initialSort || 'new');
+  const [kindFilter, setKindFilter] = useState<'all' | 'text' | 'image'>('all');
 
   const filtered = useMemo(() => {
     const base = list.filter(p => {
@@ -30,6 +31,8 @@ export default function ArchiveClient({ prompts, stats, initialSort }: Props) {
         !(p.title.includes(search) || (p.body || '').includes(search))
       )
         return false;
+      if (kindFilter === 'image' && p.kind !== 'image') return false;
+      if (kindFilter === 'text' && p.kind === 'image') return false; // 画像以外=文章扱い
       return true;
     });
     const withStats = (p: Prompt) =>
@@ -59,7 +62,7 @@ export default function ArchiveClient({ prompts, stats, initialSort }: Props) {
       }
     });
     return sorted;
-  }, [list, from, to, search, sort, stats]);
+  }, [list, from, to, search, sort, stats, kindFilter]);
 
   // tag add function removed
 
@@ -109,6 +112,20 @@ export default function ArchiveClient({ prompts, stats, initialSort }: Props) {
             className="w-full border rounded px-2 py-1 bg-white/5"
             placeholder="タイトル/本文"
           />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block mb-1">種類</label>
+          <select
+            value={kindFilter}
+            onChange={e =>
+              setKindFilter(e.target.value as 'all' | 'text' | 'image')
+            }
+            className="w-full border rounded px-2 py-1 bg-white/5"
+          >
+            <option value="all">(すべて)</option>
+            <option value="text">文章のみ</option>
+            <option value="image">写真のみ</option>
+          </select>
         </div>
         {/* Tag filter removed */}
       </div>
