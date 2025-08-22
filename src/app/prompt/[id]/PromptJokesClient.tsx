@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Joke, Comment, User, Vote, VoteType } from '../../../domain/entities';
 import { VoteButtons } from '../../../components/vote/VoteButtons';
 import { useUser } from '../../../components/user/UserContext';
@@ -23,6 +23,24 @@ export default function PromptJokesClient({
   const [scores, setScores] = useState<Record<string, number>>(initialScores);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [lastVoted, setLastVoted] = useState<string | null>(null);
+  const [lastAdded, setLastAdded] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const id = sessionStorage.getItem('lastNewJoke');
+      if (id) {
+        setLastAdded(id);
+        sessionStorage.removeItem('lastNewJoke');
+        // 自動的に強調解除
+        setTimeout(() => setLastAdded(l => (l === id ? null : l)), 4000);
+        // スクロール
+        const el = document.getElementById(`joke-${id}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    } catch {}
+  }, []);
 
   const commentsByJoke = comments.reduce<Record<string, Comment[]>>(
     (acc, c) => {
@@ -48,8 +66,13 @@ export default function PromptJokesClient({
         return (
           <li
             key={j.id}
-            className={`border rounded bg-white/5 ${
-              lastVoted === j.id ? 'ring-2 ring-blue-400' : ''
+            id={`joke-${j.id}`}
+            className={`border rounded bg-white/5 transition-shadow ${
+              lastVoted === j.id
+                ? 'ring-2 ring-blue-400'
+                : lastAdded === j.id
+                ? 'ring-2 ring-emerald-400'
+                : ''
             }`}
           >
             <button

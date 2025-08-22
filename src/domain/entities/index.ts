@@ -17,9 +17,10 @@ export interface Prompt {
   body?: string | null; // extended text (optional)
   createdAt: string;
   isActive: boolean;
-  status: 'upcoming' | 'active' | 'closed';
+  status: 'active' | 'closed';
   kind?: PromptKind; // defaults to text
   imageUrl?: string | null; // when kind === 'image'
+  tags?: string[]; // added for search/filter
 }
 
 export interface Joke {

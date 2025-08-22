@@ -1,4 +1,4 @@
-import { localDB, upsertVote } from './store';
+import { localDB, upsertVote, addPromptTag } from './store';
 import { Comment, ID, Joke, Prompt, RecentUserScore, User, Vote, VoteType } from '../../domain/entities';
 import { UserRepository, PromptRepository, JokeRepository, VoteRepository, CommentRepository, ScoreService } from '../../domain/repositories';
 import { randomUUID } from 'crypto';
@@ -23,10 +23,12 @@ export class LocalPromptRepository implements PromptRepository {
   }
   async listAll(): Promise<Prompt[]> { return [...localDB.prompts]; }
   async get(id: ID) { return localDB.prompts.find(p => p.id === id); }
+  async addTag(id: ID, tag: string) { return addPromptTag(id, tag); }
 }
 
 export class LocalJokeRepository implements JokeRepository {
   async listByPrompt(promptId: ID): Promise<Joke[]> { return localDB.jokes.filter(j => j.promptId === promptId); }
+  async listAll(): Promise<Joke[]> { return [...localDB.jokes]; }
   async create(data: Omit<Joke, 'id' | 'createdAt'>): Promise<Joke> {
     const joke: Joke = { id: randomUUID(), createdAt: now(), ...data };
     localDB.jokes.push(joke);

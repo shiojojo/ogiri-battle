@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import {
   LocalPromptRepository,
   LocalJokeRepository,
@@ -18,7 +21,9 @@ async function getData(promptId: string) {
   const userRepo = new LocalUserRepository();
   const commentRepo = new LocalCommentRepository();
   const prompt = await promptRepo.get(promptId);
-  const jokes = await jokeRepo.listByPrompt(promptId);
+  const jokes = (await jokeRepo.listByPrompt(promptId)).sort((a, b) =>
+    b.createdAt.localeCompare(a.createdAt)
+  );
   const votes = await voteRepo.listByJokeIds(jokes.map(j => j.id));
   const users = await userRepo.list();
   const comments = await Promise.all(

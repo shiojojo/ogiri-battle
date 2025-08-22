@@ -30,11 +30,12 @@ const demoPrompts: Prompt[] = [
     isActive: true,
     status: 'active',
     kind: 'text',
+    tags: ['AI','初めて'],
   },
-  { id: '77777777-7777-7777-7777-777777777777', title: '写真で一言: 黒い羊', body: '写真で一言', createdAt: new Date(baseTime - 30 * 60_000).toISOString(), isActive: true, status: 'active', kind: 'image', imageUrl: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieks99OzkiAothfzTz7FbtakQMfXVPQDL6eUDMJfv_2ghB5xB0gUYsA5n-2YUHe5Adevn9YrfUjswiDQneXg1Q0uzEjIu3R9G-DJ7xvxi6nbj-XiNWool1RV3lRjy3-zKFGPySzfgQxHGw/s650/animal_black_sheep_hitsuji.png' },
+  { id: '77777777-7777-7777-7777-777777777777', title: '写真で一言: 黒い羊', body: '写真で一言', createdAt: new Date(baseTime - 30 * 60_000).toISOString(), isActive: true, status: 'active', kind: 'image', imageUrl: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieks99OzkiAothfzTz7FbtakQMfXVPQDL6eUDMJfv_2ghB5xB0gUYsA5n-2YUHe5Adevn9YrfUjswiDQneXg1Q0uzEjIu3R9G-DJ7xvxi6nbj-XiNWool1RV3lRjy3-zKFGPySzfgQxHGw/s650/animal_black_sheep_hitsuji.png', tags: ['写真','羊'] },
   // upcoming を廃止 -> closed に変更
-  { id: '10000000-0000-0000-0000-000000000002', title: 'お題 2: 旧:もうすぐ開始 (closed)', body: null, createdAt: new Date(baseTime - 1 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
-  { id: '10000000-0000-0000-0000-000000000003', title: 'お題 3: 過去その1 (closed)', body: null, createdAt: new Date(baseTime - 2 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
+  { id: '10000000-0000-0000-0000-000000000002', title: 'お題 2: 旧:もうすぐ開始 (closed)', body: null, createdAt: new Date(baseTime - 1 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text', tags: ['旧','開始'] },
+  { id: '10000000-0000-0000-0000-000000000003', title: 'お題 3: 過去その1 (closed)', body: null, createdAt: new Date(baseTime - 2 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text', tags: ['過去'] },
   { id: '10000000-0000-0000-0000-000000000004', title: 'お題 4: 過去その2 (closed)', body: null, createdAt: new Date(baseTime - 3 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
   { id: '10000000-0000-0000-0000-000000000005', title: 'お題 5: 旧:近日 (closed)', body: null, createdAt: new Date(baseTime - 4 * 3600_000).toISOString(), isActive: false, status: 'closed', kind: 'text' },
 ];
@@ -73,17 +74,36 @@ const db: DatabaseShape = {
   prompts: demoPrompts,
   jokes: demoJokes,
   votes: [
-    // Seed votes (no self-vote violations)
-  { id: 'v0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
-  { id: 'v0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
-  { id: 'v0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000003', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
-  { id: 'v0000000-0000-0000-0000-000000000004', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
-  { id: 'v0000000-0000-0000-0000-000000000005', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    // Seed votes (no self-vote violations). Mix of ippon / waza_ari / yuko + guest votes.
+    { id: 'v0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000001', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000003', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000004', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000005', jokeId: 'aaaa0000-0000-0000-0000-000000000014', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    // Additional distribution across different jokes
+    { id: 'v0000000-0000-0000-0000-000000000006', jokeId: 'aaaa0000-0000-0000-0000-000000000005', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000007', jokeId: 'aaaa0000-0000-0000-0000-000000000006', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000008', jokeId: 'aaaa0000-0000-0000-0000-000000000007', voterUserId: null, guestName: 'ゲストA', type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000009', jokeId: 'aaaa0000-0000-0000-0000-000000000008', voterUserId: null, guestName: 'ゲストB', type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000010', jokeId: 'aaaa0000-0000-0000-0000-000000000009', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000011', jokeId: 'aaaa0000-0000-0000-0000-000000000010', voterUserId: null, guestName: 'ゲストC', type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000012', jokeId: 'aaaa0000-0000-0000-0000-000000000011', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000013', jokeId: 'aaaa0000-0000-0000-0000-000000000012', voterUserId: null, guestName: 'ゲストD', type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000014', jokeId: 'aaaa0000-0000-0000-0000-000000000013', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000015', jokeId: 'aaaa0000-0000-0000-0000-000000000015', voterUserId: null, guestName: 'ゲストE', type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000016', jokeId: 'aaaa0000-0000-0000-0000-000000000016', voterUserId: '33333333-3333-3333-3333-333333333333', guestName: null, type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000017', jokeId: 'aaaa0000-0000-0000-0000-000000000017', voterUserId: null, guestName: 'ゲストF', type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000018', jokeId: 'aaaa0000-0000-0000-0000-000000000018', voterUserId: '11111111-1111-1111-1111-111111111111', guestName: null, type: 'waza_ari', weight: DEFAULT_VOTE_WEIGHTS.waza_ari, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000019', jokeId: 'aaaa0000-0000-0000-0000-000000000019', voterUserId: null, guestName: 'ゲストG', type: 'ippon', weight: DEFAULT_VOTE_WEIGHTS.ippon, createdAt: now() },
+    { id: 'v0000000-0000-0000-0000-000000000020', jokeId: 'aaaa0000-0000-0000-0000-000000000020', voterUserId: '22222222-2222-2222-2222-222222222222', guestName: null, type: 'yuko', weight: DEFAULT_VOTE_WEIGHTS.yuko, createdAt: now() },
   ],
   comments: [
     { id: 'c0000000-0000-0000-0000-000000000001', jokeId: 'aaaa0000-0000-0000-0000-000000000001', userId: demoUsers[1].id, guestName: null, body: '息を意識するAIいい', createdAt: now() },
     { id: 'c0000000-0000-0000-0000-000000000002', jokeId: 'aaaa0000-0000-0000-0000-000000000003', userId: demoUsers[0].id, guestName: null, body: 'フルアクセス欲張り', createdAt: now() },
     { id: 'c0000000-0000-0000-0000-000000000003', jokeId: 'aaaa0000-0000-0000-0000-000000000014', userId: demoUsers[2].id, guestName: null, body: '涙のバグ好き', createdAt: now() },
+    { id: 'c0000000-0000-0000-0000-000000000004', jokeId: 'aaaa0000-0000-0000-0000-000000000007', userId: null, guestName: 'ゲストA', body: 'ゲストも参加！', createdAt: now() },
+    { id: 'c0000000-0000-0000-0000-000000000005', jokeId: 'aaaa0000-0000-0000-0000-000000000010', userId: demoUsers[2].id, guestName: null, body: '物理ならでは', createdAt: now() },
+    { id: 'c0000000-0000-0000-0000-000000000006', jokeId: 'aaaa0000-0000-0000-0000-000000000015', userId: demoUsers[0].id, guestName: null, body: '鼓動ライン好き', createdAt: now() },
   ],
   voteWeights: DEFAULT_VOTE_WEIGHTS,
 };
@@ -124,4 +144,11 @@ export function upsertVote(v: { jokeId: ID; voterUserId?: ID | null; guestName?:
   };
   db.votes.push(newVote);
   return newVote;
+}
+
+export function addPromptTag(promptId: ID, tag: string) {
+  const p = db.prompts.find(p => p.id === promptId);
+  if(!p) throw new Error('Prompt not found');
+  p.tags = Array.from(new Set([...(p.tags||[]), tag.trim()])).filter(Boolean);
+  return p;
 }

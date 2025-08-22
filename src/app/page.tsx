@@ -55,14 +55,17 @@ export default async function Home() {
                 {activePrompt.title}
               </span>
             </div>
-            <div className="flex gap-2 text-sm">
+            <div className="flex gap-3 pt-1">
               <Link
                 href={`/prompt/${activePrompt.id}`}
-                className="text-blue-500"
+                className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-md bg-blue-600 text-white font-semibold text-base shadow hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 投票
               </Link>
-              <Link href="/jokes/new" className="text-blue-500">
+              <Link
+                href="/jokes/new"
+                className="flex-1 inline-flex items-center justify-center px-4 py-3 rounded-md bg-emerald-600 text-white font-semibold text-base shadow hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+              >
                 投稿
               </Link>
             </div>
@@ -137,6 +140,12 @@ export default async function Home() {
           className="border rounded p-3 bg-white/5 hover:bg-white/10"
         >
           ボケ投稿
+        </Link>
+        <Link
+          href="/popular"
+          className="border rounded p-3 bg-white/5 hover:bg-white/10"
+        >
+          人気ボケ
         </Link>
         <Link
           href="/users/new"
